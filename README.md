@@ -8,6 +8,25 @@ The system uses a golden dataset containing questions and expected answers, gene
 
 ---
 
+## Project Structure
+
+```text
+.
+├── README.md
+├── requirements.txt
+├── data/
+│   ├── goldendataset.json
+│   └── evaluation_results.csv
+├── prompts/
+│   ├── generator_prompt.txt
+│   └── judge_prompt.txt
+└── src/
+    ├── main.py
+    ├── evaluator.py
+    ├── generator_llm.py
+    ├── judge_llm.py
+    └── generate_dataset.py
+
 ## Project Workflow
 
 ### 1. Golden Dataset
@@ -64,15 +83,3 @@ All evaluation results are saved into a CSV file for further analysis and compar
 - CSV for dataset and output handling
 
 ---
-
-## Project Structure
-
-```bash
-project/
-│
-├── dataset.csv              # Golden dataset
-├── generate_answers.py      # Generates answers using LLM
-├── judge_answers.py         # Evaluates generated answers
-├── evaluation_results.csv   # Output evaluation file
-├── requirements.txt
-└── README.md
