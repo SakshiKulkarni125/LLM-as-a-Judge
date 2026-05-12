@@ -1,0 +1,137 @@
+question,golden_answer,generated_answer,evaluation
+What is SQL indexing?,SQL indexing is a data structure technique used to quickly locate and access the data in a database table.,"SQL indexing is a data‑structure (usually a B‑tree or, for certain workloads, a hash or bitmap) that the database creates on one or more columns of a table to speed up data retrieval.  
+
+**How it works**  
+- The index stores the indexed column values in sorted order along with pointers (row IDs or page locations) to the actual rows.  
+- When a query’s `WHERE`, `JOIN`, `ORDER BY`, or `GROUP BY` clause references those columns, the optimizer can use the index to locate matching rows without scanning the entire table (a *full table scan*).
+
+**Benefits**  
+- Faster SELECT queries, especially on large tables.  
+- Enables efficient range scans, prefix searches, and ordered results.  
+- Supports uniqueness constraints (`UNIQUE` indexes) and primary keys.
+
+**Trade‑offs**  
+- Extra storage space for the index data.  
+- Overhead on INSERT, UPDATE, DELETE because the index must be maintained.  
+- Too many or poorly chosen indexes can degrade write performance and increase query‑plan complexity.
+
+**Common types**  
+- **B‑tree index** – default, good for equality and range queries.  
+- **Hash index** – fast equality lookups, limited to certain engines (e.g., MySQL Memory).  
+- **Bitmap index** – efficient for low‑cardinality columns in read‑heavy data‑warehousing.  
+- **Full‑text index** – optimized for searching text within large strings.  
+- **Spatial index** – for geometric data types.
+
+In short, an SQL index is a supplemental structure that lets the DBMS locate rows quickly, improving read performance at the cost of additional storage and write overhead.","{'correctness': 9, 'relevance': 9, 'completeness': 8, 'faithfulness': 7, 'hallucination': 2, 'reasoning_quality': 8, 'fluency_and_readability': 9, 'coherence': 9, 'safety_and_toxicity': 10, 'semantic_similarity': 8}"
+What is a primary key?,A primary key is a unique identifier for a record in a database table.,"A **primary key** is a column (or a combination of columns) in a database table that uniquely identifies each record in that table. It must contain a unique, non‑NULL value for every row, and a table can have only one primary key. It’s used to enforce entity integrity and to create relationships with foreign keys in other tables.","{'correctness': 9, 'relevance': 10, 'completeness': 9, 'faithfulness': 8, 'hallucination': 1, 'reasoning_quality': 9, 'fluency_and_readability': 9, 'coherence': 9, 'safety_and_toxicity': 10, 'semantic_similarity': 8}"
+What is a foreign key?,A foreign key is a field in a database table that links to the primary key of another table.,A **foreign key** is a column (or set of columns) in a relational database table that creates a link to the primary key of another table. It enforces **referential integrity** by ensuring that every value in the foreign‑key column matches an existing value in the referenced primary‑key column (or is NULL). This relationship lets you model real‑world associations—such as “orders belong to customers” or “students enroll in courses”—and enables joins across tables.,"{'correctness': 9, 'relevance': 10, 'completeness': 9, 'faithfulness': 8, 'hallucination': 1, 'reasoning_quality': 9, 'fluency_and_readability': 9, 'coherence': 9, 'safety_and_toxicity': 10, 'semantic_similarity': 8}"
+What is normalization?,Normalization is the process of organizing data in a database to reduce redundancy and improve data integrity.,"**Normalization** is the process of organizing data to reduce redundancy and improve integrity. In relational databases it involves structuring tables and defining relationships so that each piece of information is stored only once and dependencies are logical. This is achieved through a series of “normal forms” (1NF, 2NF, 3NF, BCNF, etc.) that set rules for how attributes should be grouped and related. The result is a cleaner schema that minimizes update anomalies, eases maintenance, and supports consistent querying.","{'correctness': 9, 'relevance': 9, 'completeness': 8, 'faithfulness': 8, 'hallucination': 1, 'reasoning_quality': 9, 'fluency_and_readability': 9, 'coherence': 9, 'safety_and_toxicity': 10, 'semantic_similarity': 8}"
+What is denormalization?,Denormalization is the process of combining tables to improve read performance at the cost of write performance and data integrity.,"Denormalization is the intentional introduction of redundancy into a relational database design by merging tables or duplicating data that would otherwise be kept separate in a fully normalized schema.  
+
+**Why it’s done**
+- **Performance:** Reduces the number of costly joins needed for common queries, speeding up read‑heavy workloads.
+- **Simplified queries:** Makes SQL statements shorter and easier to write/maintain.
+- **Support for specific access patterns:** Aligns the physical layout with how the application actually accesses data (e.g., reporting, caching).
+
+**Typical techniques**
+- Adding derived or aggregated columns (e.g., storing a total price alongside line items).
+- Storing foreign‑key data redundantly (e.g., copying a customer’s name into an orders table).
+- Combining related tables into a single “wide” table.
+
+**Trade‑offs**
+- **Increased storage** and potential for data inconsistency.
+- **More complex write logic:** Updates, inserts, and deletes must propagate changes to all redundant copies.
+- **Potential for anomalies** if not carefully managed (e.g., stale data).
+
+In short, denormalization sacrifices strict normalization rules to gain faster read performance and simpler query patterns, at the cost of extra maintenance overhead.","{'correctness': 9, 'relevance': 9, 'completeness': 8, 'faithfulness': 8, 'hallucination': 1, 'reasoning_quality': 8, 'fluency_and_readability': 9, 'coherence': 9, 'safety_and_toxicity': 10, 'semantic_similarity': 8}"
+What is a composite key?,A composite key is a combination of two or more columns in a database table that uniquely identifies a row in that table.,"A **composite key** (also called a **compound key**) is a database key that consists of two or more columns (attributes) whose combined values uniquely identify each row in a table. Individually, none of the columns may be unique, but together they enforce entity integrity.
+
+**Key points**
+- **Purpose:** Guarantees that each record is distinct when a single column isn’t sufficient.
+- **Usage:** Often used in junction (many‑to‑many) tables, or when natural business rules involve multiple fields (e.g., `order_id` + `product_id` in an order‑line table).
+- **Implementation:** Declared as the primary key or a unique constraint that spans multiple columns.
+
+**Example**
+
+```sql
+CREATE TABLE OrderLine (
+    order_id   INT,
+    product_id INT,
+    quantity   INT,
+    PRIMARY KEY (order_id, product_id)   -- composite key
+);
+```
+
+Here, the pair `(order_id, product_id)` uniquely identifies each line item, even though `order_id` or `product_id` alone could repeat.","{'correctness': 9, 'relevance': 9, 'completeness': 8, 'faithfulness': 9, 'hallucination': 1, 'reasoning_quality': 8, 'fluency_and_readability': 9, 'coherence': 9, 'safety_and_toxicity': 10, 'semantic_similarity': 8}"
+What is a surrogate key?,"A surrogate key is an artificial key that is used to uniquely identify a record in a table, often implemented as an auto-incrementing integer.","A **surrogate key** is an artificial, system‑generated identifier used as the primary key of a database table. It has no business meaning; it exists solely to uniquely identify each row.
+
+**Key characteristics**
+
+| Aspect | Surrogate Key | Natural (Business) Key |
+|--------|---------------|------------------------|
+| Origin | Generated by the DB (e.g., auto‑increment integer, UUID) | Derived from real‑world data (e.g., SSN, email) |
+| Meaning | None; opaque to users | Carries business semantics |
+| Stability | Never changes (even if business data changes) | May need updates when business data changes |
+| Size | Usually small and fixed (int, bigint, GUID) | Can be large or composite |
+| Indexing | Efficient for joins and indexing | May be less efficient, especially if composite |
+
+**Typical implementations**
+
+- **Auto‑increment integer** (e.g., `IDENTITY` in SQL Server, `SERIAL` in PostgreSQL)
+- **Sequence‑generated number**
+- **Globally unique identifier (GUID/UUID)**
+
+**Why use a surrogate key?**
+
+1. **Performance** – Small, single‑column keys speed up joins, indexing, and foreign‑key lookups.
+2. **Stability** – Business attributes can change; a surrogate key remains constant, avoiding cascade updates.
+3. **Simplicity** – Guarantees uniqueness without needing to enforce complex natural‑key constraints.
+4. **Decoupling** – Allows the logical data model to evolve independently of the physical identifier.
+
+**Example**
+
+```sql
+CREATE TABLE Customer (
+    CustomerID   BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,  -- surrogate key
+    SSN          CHAR(9) UNIQUE,                                 -- natural key
+    FirstName    VARCHAR(50),
+    LastName     VARCHAR(50),
+    Email        VARCHAR(100)
+);
+```
+
+Here `CustomerID` is the surrogate key used for all foreign‑key references, while `SSN` is a natural key that might also be unique but isn’t used for relational links.","{'correctness': 9, 'relevance': 10, 'completeness': 9, 'faithfulness': 8, 'hallucination': 2, 'reasoning_quality': 9, 'fluency_and_readability': 8, 'coherence': 9, 'safety_and_toxicity': 10, 'semantic_similarity': 8}"
+What is a natural key?,A natural key is a type of primary key that is formed of attributes that naturally exist and are used to identify a record.,"A **natural key** is a column (or set of columns) in a database table that uniquely identifies each record using data that already exists in the real world and has intrinsic meaning.  
+
+- **Characteristics**
+  - Derived from an attribute that naturally exists in the domain (e.g., Social Security Number, ISBN, email address, VIN).
+  - No artificial or system‑generated values are added solely for identification.
+  - The key’s values are stable, unique, and not null.
+
+- **Contrast with a surrogate key**
+  - A surrogate key is an artificial identifier (e.g., an auto‑increment integer) that has no business meaning.
+
+- **Pros**
+  - No extra column needed; the key is meaningful to users.
+  - Can simplify queries and reporting because the identifier is already known.
+
+- **Cons**
+  - Real‑world attributes can change, be reused, or contain errors, which can break referential integrity.
+  - May be large or composite, leading to slower joins and larger indexes.
+
+**Example:** In a `Books` table, the ISBN (`VARCHAR(13)`) can serve as a natural key because each book’s ISBN is unique and meaningful outside the database.","{'correctness': 9, 'relevance': 9, 'completeness': 8, 'faithfulness': 8, 'hallucination': 1, 'reasoning_quality': 8, 'fluency_and_readability': 9, 'coherence': 9, 'safety_and_toxicity': 10, 'semantic_similarity': 8}"
+What is a database schema?,"A database schema is the structure that defines the organization of data in a database, including tables, fields, relationships, and constraints.","A **database schema** is the logical blueprint of a database. It defines how data is organized and related, specifying:
+
+- **Tables (or collections)** and their columns/fields  
+- **Data types** for each column  
+- **Constraints** such as primary keys, foreign keys, uniqueness, and NOT NULL rules  
+- **Relationships** between tables (e.g., one‑to‑many, many‑to‑many)  
+- **Indexes**, views, stored procedures, and other structural elements
+
+In short, the schema describes the structure, rules, and organization of the data stored in the database.","{'correctness': 9, 'relevance': 10, 'completeness': 9, 'faithfulness': 8, 'hallucination': 1, 'reasoning_quality': 8, 'fluency_and_readability': 9, 'coherence': 9, 'safety_and_toxicity': 10, 'semantic_similarity': 8}"
+What is a database instance?,"A database instance is a specific implementation of a database, including the data and the database management system (DBMS) that manages it.","A **database instance** is the set of memory structures and background processes that a database management system (DBMS) creates when it is started and that manage the physical storage of data. In other words, it is the running “engine” of a database—its allocated RAM (buffer cache, shared pool, etc.) and the OS‑level processes or threads (e.g., Oracle’s SMON, PMON, DBWR) that handle tasks such as logging, checkpointing, and transaction control.  
+
+- **Instance vs. database:** The *database* refers to the actual data files on disk (tables, indexes, etc.), while the *instance* is the live, in‑memory environment that accesses and manipulates those files.  
+- **Uniqueness:** Each instance has its own identifier (e.g., SID in Oracle, instance name in SQL Server) and can be associated with one or more databases (e.g., Oracle RAC has multiple instances accessing the same database).  
+
+So, a database instance is essentially the active, in‑memory representation of a DBMS that enables users and applications to read and write the stored data.","{'correctness': 9, 'relevance': 9, 'completeness': 8, 'faithfulness': 7, 'hallucination': 2, 'reasoning_quality': 8, 'fluency_and_readability': 9, 'coherence': 9, 'safety_and_toxicity': 10, 'semantic_similarity': 7}"
